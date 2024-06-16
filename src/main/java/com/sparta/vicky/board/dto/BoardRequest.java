@@ -1,9 +1,11 @@
 package com.sparta.vicky.board.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class BoardRequest {
 
     @NotBlank
