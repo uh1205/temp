@@ -1,7 +1,6 @@
 package com.sparta.vicky.board.entity;
 
 import com.sparta.vicky.board.dto.BoardRequest;
-import com.sparta.vicky.comment.entity.Comment;
 import com.sparta.vicky.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,8 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -26,17 +23,7 @@ public class Board {
     private String title;
 
     @Column(nullable = false)
-    private String region;
-
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
     private String content;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     @Column(nullable = false)
     private int likeCount;
@@ -47,17 +34,19 @@ public class Board {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     /**
      * 생성자
      */
-    public Board(BoardRequest boardRequest, User user) {
-        this.title = boardRequest.getTitle();
-        this.region = boardRequest.getRegion();
-        this.address = boardRequest.getAddress();
-        this.content = boardRequest.getContent();
+    public Board(BoardRequest requestDto, User user) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.likeCount = 0;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.likeCount = 0;
         this.user = user;
     }
 
@@ -73,11 +62,9 @@ public class Board {
     /**
      * 수정 메서드
      */
-    public void update(BoardRequest request) {
-        this.title = request.getTitle();
-        this.region = request.getRegion();
-        this.address = request.getAddress();
-        this.content = request.getContent();
+    public void update(BoardRequest requestDto) {
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
         this.updatedAt = LocalDateTime.now();
     }
 
