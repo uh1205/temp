@@ -57,10 +57,10 @@ public class BoardService {
      * 게시물 수정
      */
     @Transactional
-    public Board updateBoard(Long boardId, BoardRequest requestDto, User user) {
+    public Board updateBoard(Long boardId, BoardRequest request, Long userId) {
         Board board = getBoard(boardId);
-        board.verifyUser(user.getId());
-        board.update(requestDto);
+        board.verifyUser(userId);
+        board.update(request);
 
         return board;
     }
@@ -69,9 +69,9 @@ public class BoardService {
      * 게시물 삭제
      */
     @Transactional
-    public Long deleteBoard(Long boardId, User user) {
+    public Long deleteBoard(Long boardId, Long userId) {
         Board board = getBoard(boardId);
-        board.verifyUser(user.getId());
+        board.verifyUser(userId);
         boardRepository.delete(board);
 
         return boardId;
