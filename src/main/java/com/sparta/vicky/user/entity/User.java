@@ -45,12 +45,12 @@ public class User extends Timestamped {
     /**
      * 생성자
      */
-    public User(SignupRequest request, String encodedPassword) {
-        this.username = request.getUsername();
+    public User(SignupRequest requestDto, String encodedPassword) {
+        this.username = requestDto.getUsername();
         this.password = encodedPassword;
-        this.name = request.getName();
-        this.email = request.getEmail();
-        this.introduce = request.getIntroduce();
+        this.name = requestDto.getName();
+        this.email = requestDto.getEmail();
+        this.introduce = requestDto.getIntroduce();
         this.status = UserStatus.JOINED;
         this.statusUpdatedAt = LocalDateTime.now();
     }
@@ -66,25 +66,25 @@ public class User extends Timestamped {
     /**
      * 프로필 수정
      */
-    public void updateProfile(ProfileRequest request) {
-        this.name = request.getName();
-        this.email = request.getEmail();
-        this.introduce = request.getIntroduce();
+    public void updateProfile(ProfileRequest requestDto) {
+        this.name = requestDto.getName();
+        this.email = requestDto.getEmail();
+        this.introduce = requestDto.getIntroduce();
     }
 
     /**
      * 비밀번호 수정
      */
-    public void updatePassword(String encodedNewPassword) {
-        this.password = encodedNewPassword;
+    public void updatePassword(String encodedPassword) {
+        this.password = encodedPassword;
     }
 
     /**
      * 검증 메서드
      */
-    public void verifyUser(Long id) {
-        if (!this.id.equals(id)) {
-            throw new IllegalArgumentException("User with id " + id + " does not belong to user with id " + this.id);
+    public void verifyUser(Long userId) {
+        if (!this.id.equals(userId)) {
+            throw new IllegalArgumentException("사용자의 id가 해당 id와 다릅니다.");
         }
     }
 
