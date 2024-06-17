@@ -6,6 +6,7 @@ import com.sparta.vicky.board.dto.BoardResponse;
 import com.sparta.vicky.board.entity.Board;
 import com.sparta.vicky.board.service.BoardService;
 import com.sparta.vicky.security.UserDetailsImpl;
+import com.sparta.vicky.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -104,7 +105,8 @@ public class BoardController {
             return getFieldErrorResponseEntity(bindingResult, "게시물 수정 실패");
         }
         try {
-            Board board = boardService.updateBoard(boardId, request, userDetails.getUser());
+            User user = userDetails.getUser();
+            Board board = boardService.updateBoard(boardId, request, user.getId());
             BoardResponse response = new BoardResponse(board);
 
             return getResponseEntity(response, "게시물 수정 성공");
@@ -124,7 +126,8 @@ public class BoardController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         try {
-            Long response = boardService.deleteBoard(boardId, userDetails.getUser());
+            User user = userDetails.getUser();
+            Long response = boardService.deleteBoard(boardId, user.getId());
 
             return getResponseEntity(response, "게시물 삭제 성공");
 
