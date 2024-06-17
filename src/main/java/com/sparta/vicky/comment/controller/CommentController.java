@@ -6,6 +6,7 @@ import com.sparta.vicky.comment.entity.Comment;
 import com.sparta.vicky.comment.service.CommentService;
 import com.sparta.vicky.base.dto.CommonResponse;
 import com.sparta.vicky.security.UserDetailsImpl;
+import com.sparta.vicky.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -100,7 +101,8 @@ public class CommentController {
         try {
             verifyPathVariable(boardId, request);
 
-            Comment comment = commentService.updateComment(boardId, commentId, request, userDetails.getUser());
+            User user = userDetails.getUser();
+            Comment comment = commentService.updateComment(boardId, commentId, request, user.getId());
             CommentResponse response = new CommentResponse(comment);
 
             return getResponseEntity(response, "댓글 수정 성공");
@@ -120,7 +122,9 @@ public class CommentController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         try {
-            Long response = commentService.deleteComment(boardId, commentId, userDetails.getUser());
+            User user = userDetails.getUser();
+            Long response = commentService.deleteComment(boardId, commentId, user.getId());
+
             return getResponseEntity(response, "댓글 삭제 성공");
 
         } catch (Exception e) {
