@@ -23,14 +23,6 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
-
     @Column(nullable = false)
     private int likeCount;
 
@@ -40,15 +32,22 @@ public class Comment {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     /**
      * 생성자
      */
-    public Comment(CommentRequest request, Board board, User user) {
-        this.content = request.getContent();
+    public Comment(CommentRequest requestDto, Board board, User user) {
+        this.content = requestDto.getContent();
+        this.likeCount = 0;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
-        this.likeCount = 0;
         this.board = board;
         this.user = user;
     }
@@ -71,8 +70,8 @@ public class Comment {
     /**
      * 수정 메서드
      */
-    public void update(CommentRequest request) {
-        this.content = request.getContent();
+    public void update(CommentRequest requestDto) {
+        this.content = requestDto.getContent();
         this.updatedAt = LocalDateTime.now();
     }
 
