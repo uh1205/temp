@@ -17,8 +17,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class CommentService {
 
-    private final BoardService boardService;
     private final CommentRepository commentRepository;
+    private final BoardService boardService;
 
     /**
      * 댓글 작성
@@ -57,9 +57,9 @@ public class CommentService {
      * 댓글 수정
      */
     @Transactional
-    public Comment updateComment(Long boardId, Long commentId, CommentRequest request, User user) {
+    public Comment updateComment(Long boardId, Long commentId, CommentRequest request, Long userId) {
         Comment comment = getComment(boardId, commentId);
-        comment.verifyUser(user.getId());
+        comment.verifyUser(userId);
         comment.update(request);
 
         return comment;
@@ -69,9 +69,9 @@ public class CommentService {
      * 댓글 삭제
      */
     @Transactional
-    public Long deleteComment(Long boardId, Long commentId, User user) {
+    public Long deleteComment(Long boardId, Long commentId, Long userId) {
         Comment comment = getComment(boardId, commentId);
-        comment.verifyUser(user.getId());
+        comment.verifyUser(userId);
         commentRepository.delete(comment);
 
         return commentId;
