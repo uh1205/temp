@@ -1,9 +1,10 @@
 package com.sparta.vicky.user.dto;
 
-import jakarta.validation.constraints.*;
-import lombok.Getter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import lombok.Data;
 
-@Getter
+@Data
 public class ProfileRequest {
 
     @NotBlank(message = "이름을 입력하세요")
