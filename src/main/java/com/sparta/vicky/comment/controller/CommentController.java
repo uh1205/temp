@@ -39,17 +39,12 @@ public class CommentController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "댓글 작성 실패");
         }
-        try {
             verifyPathVariable(boardId, request);
 
             Comment comment = commentService.createComment(request, userDetails.getUser());
             CommentResponse response = new CommentResponse(comment);
 
             return getResponseEntity(response, "댓글 작성 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -73,15 +68,10 @@ public class CommentController {
             @PathVariable Long boardId,
             @PathVariable Long commentId
     ) {
-        try {
             Comment comment = commentService.getComment(boardId, commentId);
             CommentResponse response = new CommentResponse(comment);
 
             return getResponseEntity(response, "댓글 조회 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -98,7 +88,6 @@ public class CommentController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "댓글 수정 실패");
         }
-        try {
             verifyPathVariable(boardId, request);
 
             User user = userDetails.getUser();
@@ -106,10 +95,6 @@ public class CommentController {
             CommentResponse response = new CommentResponse(comment);
 
             return getResponseEntity(response, "댓글 수정 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -121,15 +106,10 @@ public class CommentController {
             @PathVariable Long commentId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        try {
             User user = userDetails.getUser();
             Long response = commentService.deleteComment(boardId, commentId, user.getId());
 
             return getResponseEntity(response, "댓글 삭제 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     private static void verifyPathVariable(Long boardId, CommentRequest request) {

@@ -34,15 +34,10 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "회원가입 실패");
         }
-        try {
             User user = userService.signup(request);
             SignupResponse response = new SignupResponse(user);
 
             return getResponseEntity(response, "회원 가입 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -52,14 +47,9 @@ public class UserController {
     public ResponseEntity<CommonResponse<?>> logout(
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        try {
             Long response = userService.logout(userDetails.getUser());
 
             return getResponseEntity(response, "로그아웃 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -70,14 +60,9 @@ public class UserController {
             @RequestBody WithdrawRequest request,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        try {
             Long response = userService.withdraw(request, userDetails.getUser().getId());
 
             return getResponseEntity(response, "회원 탈퇴 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -87,14 +72,9 @@ public class UserController {
     public ResponseEntity<CommonResponse<?>> getProfile(
             @PathVariable Long userId
     ) {
-        try {
             ProfileResponse response = userService.getProfile(userId);
 
             return getResponseEntity(response, "프로필 조회 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -110,16 +90,11 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "프로필 수정 실패");
         }
-        try {
             validateUser(userId, userDetails);
 
             ProfileResponse response = userService.updateProfile(userId, request);
 
             return getResponseEntity(response, "프로필 수정 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -135,16 +110,11 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "비밀번호 변경 실패");
         }
-        try {
             validateUser(userId, userDetails);
 
             ProfileResponse response = userService.updatePassword(userId, request);
 
             return getResponseEntity(response, "비빌번호 변경 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     private static void validateUser(Long userId, UserDetailsImpl userDetails) {

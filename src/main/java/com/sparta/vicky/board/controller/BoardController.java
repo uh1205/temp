@@ -18,7 +18,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import static com.sparta.vicky.util.ControllerUtil.*;
+import static com.sparta.vicky.util.ControllerUtil.getFieldErrorResponseEntity;
+import static com.sparta.vicky.util.ControllerUtil.getResponseEntity;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,15 +40,10 @@ public class BoardController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "게시물 작성 실패");
         }
-        try {
-            Board board = boardService.createBoard(request, userDetails.getUser());
-            BoardResponse response = new BoardResponse(board);
+        Board board = boardService.createBoard(request, userDetails.getUser());
+        BoardResponse response = new BoardResponse(board);
 
-            return getResponseEntity(response, "게시물 작성 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
+        return getResponseEntity(response, "게시물 작성 성공");
     }
 
     /**
@@ -80,15 +76,10 @@ public class BoardController {
     public ResponseEntity<CommonResponse<?>> getBoard(
             @PathVariable Long boardId
     ) {
-        try {
-            Board board = boardService.getBoard(boardId);
-            BoardResponse response = new BoardResponse(board);
+        Board board = boardService.getBoard(boardId);
+        BoardResponse response = new BoardResponse(board);
 
-            return getResponseEntity(response, "게시물 조회 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
+        return getResponseEntity(response, "게시물 조회 성공");
     }
 
     /**
@@ -104,17 +95,11 @@ public class BoardController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "게시물 수정 실패");
         }
-        try {
-            User user = userDetails.getUser();
-            Board board = boardService.updateBoard(boardId, request, user.getId());
-            BoardResponse response = new BoardResponse(board);
+        User user = userDetails.getUser();
+        Board board = boardService.updateBoard(boardId, request, user.getId());
+        BoardResponse response = new BoardResponse(board);
 
-            return getResponseEntity(response, "게시물 수정 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
-
+        return getResponseEntity(response, "게시물 수정 성공");
     }
 
     /**
@@ -125,15 +110,10 @@ public class BoardController {
             @PathVariable Long boardId,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        try {
-            User user = userDetails.getUser();
-            Long response = boardService.deleteBoard(boardId, user.getId());
+        User user = userDetails.getUser();
+        Long response = boardService.deleteBoard(boardId, user.getId());
 
-            return getResponseEntity(response, "게시물 삭제 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
+        return getResponseEntity(response, "게시물 삭제 성공");
     }
 
 }

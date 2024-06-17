@@ -37,17 +37,12 @@ public class LikeController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "게시물 좋아요 토글 실패");
         }
-        try {
             verifyPathVariable(boardId, request.getContentId());
 
             Like like = likeService.toggleLike(request, userDetails.getUser());
             LikeResponse response = new LikeResponse(like);
 
             return getResponseEntity(response, "게시물 좋아요 토글 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     /**
@@ -63,17 +58,12 @@ public class LikeController {
         if (bindingResult.hasErrors()) {
             return getFieldErrorResponseEntity(bindingResult, "댓글 좋아요 토글 실패");
         }
-        try {
             verifyPathVariable(commentId, request.getContentId());
 
             Like like = likeService.toggleLike(request, userDetails.getUser());
             LikeResponse response = new LikeResponse(like);
 
             return getResponseEntity(response, "댓글 좋아요 토글 성공");
-
-        } catch (Exception e) {
-            return getBadRequestResponseEntity(e);
-        }
     }
 
     private static void verifyPathVariable(Long contentId, Long requestId) {

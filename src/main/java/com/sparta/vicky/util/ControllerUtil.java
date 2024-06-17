@@ -1,7 +1,7 @@
 package com.sparta.vicky.util;
 
-import com.sparta.vicky.base.dto.CommonResponse;
 import lombok.extern.slf4j.Slf4j;
+import com.sparta.vicky.base.dto.CommonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -9,7 +9,7 @@ import org.springframework.validation.FieldError;
 
 import java.util.List;
 
-@Slf4j(topic = "Controller")
+@Slf4j
 public final class ControllerUtil {
 
     public static ResponseEntity<CommonResponse<?>> getFieldErrorResponseEntity(BindingResult bindingResult, String msg) {
@@ -26,15 +26,8 @@ public final class ControllerUtil {
                         .build());
     }
 
-    public static ResponseEntity<CommonResponse<?>> getBadRequestResponseEntity(Exception e) {
-        return org.springframework.http.ResponseEntity.badRequest().body(CommonResponse.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .msg(e.getMessage())
-                .build());
-    }
-
     public static ResponseEntity<CommonResponse<?>> getResponseEntity(Object response, String msg) {
-        return org.springframework.http.ResponseEntity.ok().body(CommonResponse.builder()
+        return ResponseEntity.ok().body(CommonResponse.builder()
                 .statusCode(HttpStatus.OK.value())
                 .msg(msg)
                 .data(response)
