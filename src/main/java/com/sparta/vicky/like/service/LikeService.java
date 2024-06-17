@@ -9,22 +9,18 @@ import com.sparta.vicky.like.entity.LikeStatus;
 import com.sparta.vicky.like.repository.LikeRepository;
 import com.sparta.vicky.user.entity.User;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class LikeService {
 
-    private static final Logger log = LoggerFactory.getLogger(LikeService.class);
+    private final LikeRepository likeRepository;
     private final BoardService boardService;
     private final CommentService commentService;
-    private final LikeRepository likeRepository;
 
     /**
      * 좋아요 토글
@@ -34,17 +30,18 @@ public class LikeService {
         ContentType contentType = request.getContentType();
         Long contentId = request.getContentId();
 
-        Optional<Like> existLike = likeRepository.findByContentTypeAndContentId(contentType, contentId);
+        Like like = likeRepository.findByContentTypeAndContentId(contentType, contentId).orElse(null);
 
-        Like like = existLike.orElseGet(() -> createLike(request, user));
+        if (like == null) {
+            like = createLike(request, user);
+        }
 
         if (like.getStatus().equals(LikeStatus.CANCELED)) {
-            doLike(like, user.getId()); // 취소된 좋아요이거나 신규 좋아요인 경우 좋아요
+            doLike(like, user.getId()); // 취소된 좋아요거나 신규 좋아요인 경우 좋아요 수행
         } else {
             cancelLike(like, user.getId()); // 이미 좋아요 상태인 경우 좋아요 취소
         }
 
-        log.info("좋아요 토글 완료");
         return like;
     }
 
@@ -63,11 +60,10 @@ public class LikeService {
         if (userId.equals(user.getId())) {
             throw new IllegalArgumentException("본인이 작성한 컨텐츠에 좋아요를 남길 수 없습니다.");
         }
-        // 좋아요 객체 생성
-        Like like = new Like(request, user);
-        likeRepository.save(like);
 
-        return like;
+        Like like = new Like(request, user);
+
+        return likeRepository.save(like);
     }
 
     /**
