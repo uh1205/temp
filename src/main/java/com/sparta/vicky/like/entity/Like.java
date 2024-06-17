@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "likes")
 public class Like extends Timestamped {
 
     @Id
@@ -37,9 +36,9 @@ public class Like extends Timestamped {
     /**
      * 생성자
      */
-    public Like(LikeRequest request, User user) {
-        this.contentType = request.getContentType();
-        this.contentId = request.getContentId();
+    public Like(LikeRequest requestDto, User user) {
+        this.contentType = requestDto.getContentType();
+        this.contentId = requestDto.getContentId();
         this.status = LikeStatus.CANCELED; // 좋아요 로직 수행 전에는 취소 상태
         this.user = user;
     }
