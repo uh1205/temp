@@ -1,22 +1,22 @@
 package com.sparta.vicky.board.dto;
 
 import com.sparta.vicky.board.entity.Board;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 public class BoardResponse {
 
-    private final Long id;
-    private final String title;
-    private final String region;
-    private final String address;
-    private final String content;
-    private final Long userId;
-    private final int likes;
-    private final LocalDateTime createdAt;
-    private final LocalDateTime updatedAt;
+    private Long id;
+    private String title;
+    private String region;
+    private String address;
+    private String content;
+    private Long userId;
+    private int likes;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
