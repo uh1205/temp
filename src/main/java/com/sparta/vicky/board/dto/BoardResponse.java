@@ -9,22 +9,18 @@ import java.time.LocalDateTime;
 public class BoardResponse {
 
     private Long id;
-    private String title;
-    private String region;
-    private String address;
-    private String content;
     private Long userId;
+    private String title;
+    private String content;
     private int likes;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
-        this.title = board.getTitle();
-        this.region = board.getRegion();
-        this.address = board.getAddress();
-        this.content = board.getContent();
         this.userId = board.getUser().getId();
+        this.title = board.getTitle();
+        this.content = board.getContent();
         this.likes = board.getLikeCount();
         this.createdAt = board.getCreatedAt();
         this.updatedAt = board.getUpdatedAt();
