@@ -36,15 +36,11 @@ class BoardServiceTest {
         BoardRequest createRequest = BoardRequest.builder()
                 .title("title")
                 .content("content")
-                .address("address")
-                .region("region")
                 .build();
 
         BoardRequest updateRequest = BoardRequest.builder()
                 .title("newTitle")
                 .content("newContent")
-                .address("newAddress")
-                .region("newRegion")
                 .build();
 
         Board board = new Board(createRequest, user);
@@ -55,13 +51,11 @@ class BoardServiceTest {
         BoardService boardService = new BoardService(boardRepository, userService);
 
         // when
-        Board newBoard = boardService.updateBoard(boardId, updateRequest, user);
+        Board newBoard = boardService.updateBoard(boardId, updateRequest, user.getId());
 
         // then
         assertEquals("newTitle", newBoard.getTitle());
         assertEquals("newContent", newBoard.getContent());
-        assertEquals("newAddress", newBoard.getAddress());
-        assertEquals("newRegion", newBoard.getRegion());
     }
 
 }
