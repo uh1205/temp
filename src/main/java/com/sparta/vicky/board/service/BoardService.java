@@ -35,8 +35,9 @@ public class BoardService {
         if (userId == null) {
             return boardRepository.findAll(pageable);
         }
+
         User user = userService.getUser(userId);
-        // 사용자 탈퇴 여부 확인
+
         if (user.getStatus().equals(UserStatus.WITHDRAWN)) {
             throw new IllegalArgumentException("해당 사용자는 탈퇴 상태입니다.");
         }
@@ -56,10 +57,10 @@ public class BoardService {
      * 게시물 수정
      */
     @Transactional
-    public Board updateBoard(Long boardId, BoardRequest request, User user) {
+    public Board updateBoard(Long boardId, BoardRequest requestDto, User user) {
         Board board = getBoard(boardId);
         board.verifyUser(user.getId());
-        board.update(request);
+        board.update(requestDto);
 
         return board;
     }
